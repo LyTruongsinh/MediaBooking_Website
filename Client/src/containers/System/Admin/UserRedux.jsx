@@ -95,7 +95,7 @@ class UserRedux extends Component {
             gender: this.state.gender,
             roleId: this.state.role,
             phoneNumber: this.state.phoneNumber,
-            positionId: this.state.position,
+            positionId: this.state.position
         }); // gọi hàm createNewUser trong props và truyền vào state
     };
     checkValidateInput = () => {
