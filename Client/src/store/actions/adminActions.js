@@ -1,6 +1,7 @@
 import actionTypes from "./actionTypes";
 import { getAllCodeService } from "../../services/userService";
 import { createNewUserService } from "../../services/userService";
+import { getAllUsers } from "../../services/userService";
 export const fetchGenderStart = () => {
     return async (dispatch, getState) => {
         try {
@@ -9,7 +10,6 @@ export const fetchGenderStart = () => {
             });
             let res = await getAllCodeService("GENDER");
             if (res && res.errCode === 0) {
-                console.log("get state", getState());
                 dispatch(fetchGenderSuccess(res.data));
             } else {
                 dispatch(fetchGenderFailed());
@@ -42,7 +42,6 @@ export const fetchPositionStart = () => {
         try {
             let res = await getAllCodeService("POSITION");
             if (res && res.errCode === 0) {
-                console.log("get state", getState());
                 dispatch(fetchPositionSuccess(res.data));
             } else {
                 dispatch(fetchPositionFailed());
@@ -78,7 +77,6 @@ export const fetchRoleStart = () => {
             });
             let res = await getAllCodeService("ROLE");
             if (res && res.errCode === 0) {
-                console.log("get state", getState());
                 dispatch(fetchRoleSuccess(res.data));
             } else {
                 dispatch(fetchRoleFailed());
@@ -110,7 +108,6 @@ export const createNewUser = (data) => {
             let res = await createNewUserService(data);
             console.log("check create user redux", res);
             if (res && res.errCode === 0) {
-                console.log("get state", getState());
                 dispatch(saveUserSuccess());
             } else {
                 dispatch(saveUserFailded());
@@ -127,3 +124,40 @@ export const saveUserSuccess = () => ({
 export const saveUserFailded = () => ({
     type: actionTypes.CREATE_USER_FAILDED,
 })
+
+
+
+
+
+
+
+
+
+
+
+
+export const fetchAllUsersStart = () => {
+    return async (dispatch, getState) => {
+        try {
+            dispatch({
+                type: actionTypes.FETCH_GENDER_START,
+            });
+            let res = await getAllUsers("ALL");
+            if (res && res.errCode === 0) {
+                dispatch(fetchAllUsersSuccess(res.allusers));
+            } else {
+                dispatch(fetchAllUsersFailed());
+            }
+        } catch (e) {
+            fetchGenderFailed();
+            console.log("fetchGenderStart error", e);
+        }
+    };
+};
+export const fetchAllUsersSuccess = (allUsers) => ({
+    type: actionTypes.FETCH_ALL_USERS_SUCCESS,
+    users: allUsers,
+});
+export const fetchAllUsersFailed = () => ({
+    type: actionTypes.FETCH_ALL_USERS_FAILDED,
+});
