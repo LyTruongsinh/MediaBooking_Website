@@ -57,6 +57,20 @@ class UserRedux extends Component {
                 role: arrRoles && arrRoles.length > 0 ? arrRoles[0].key : "",
             });
         }
+        if (prevProps.listUsers !== this.props.listUsers) {
+            this.setState({
+                email: "",
+                password: "",
+                firstName: "",
+                lastName: "",
+                address: "",
+                phoneNumber: "",
+                gender: "",
+                position: "",
+                role: "",
+                image: "",
+            });
+        }
     }
     handleOnchangeImg = (event) => {
         let data = event.target.files; // lấy ra file ảnh
@@ -309,7 +323,7 @@ class UserRedux extends Component {
                                     <FormattedMessage id="manage-user.save" />
                                 </button>
                             </div>
-                            <div className="col-12">
+                            <div className="col-12 mb-5">
                                 <TableManageUser />
                             </div>
                         </div>
@@ -334,6 +348,7 @@ const mapStateToProps = (state) => {
         positionRedux: state.admin.positions,
         roleRedux: state.admin.roles,
         isLoadingGender: state.admin.isLoadingGender,
+        listUsers: state.admin.users,
     };
 };
 
@@ -343,6 +358,7 @@ const mapDispatchToProps = (dispatch) => {
         getPositionStart: () => dispatch(actions.fetchPositionStart()),
         getRoleStart: () => dispatch(actions.fetchRoleStart()),
         createNewUser: (data) => dispatch(actions.createNewUser(data)),
+        fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
     };
 };
 
