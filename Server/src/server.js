@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true}))
 viewEngine(app);
 initWebRoutes(app);
 connectdb();
-let PORT = process.env.PORT;
+let PORT = process.env.PORT || 8081;
 app.listen(PORT, ()=> {
     console.log("Backend is running on the port :"+PORT)
 })
