@@ -124,6 +124,7 @@ let creatNewUser = (data) => {
                 roleId: data.roleId,
                 phoneNumber: data.phoneNumber,
                 positionId: data.positionId,
+                image: data.image,
             });
             resolve({
                 errCode: 0,
@@ -195,6 +196,10 @@ let updateUserData = (data) => {
             user.positionId = data.positionId;
             user.gender = data.gender;
             user.phoneNumber = data.phoneNumber;
+            // nếu upload ảnh thì mới sửa trường image
+            if (data.image) {
+                user.image = data.image; // data.image is base64 string
+            }
             await user.save();
             resolve({
                 errCode: 0,

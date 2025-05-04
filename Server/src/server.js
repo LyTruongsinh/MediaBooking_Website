@@ -14,12 +14,13 @@ app.use(
         credentials: true // Cho phép gửi cookies và headers xác thực
     })
 );
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true}))
+// Tăng giới hạn payload lên 50mb (hoặc tùy theo nhu cầu)
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 viewEngine(app);
 initWebRoutes(app);
 connectdb();
-let PORT = process.env.PORT || 8081;
+let PORT = process.env.PORT || 8080;
 app.listen(PORT, ()=> {
     console.log("Backend is running on the port :"+PORT)
 })

@@ -25,7 +25,7 @@ class TableManageUser extends Component {
     };
     handleEditUser = (user) => {
         this.props.handleEditUserFromParentKey(user);
-    }
+    };
     render() {
         let arrUsers = this.state.userRedux;
         return (
@@ -36,6 +36,7 @@ class TableManageUser extends Component {
                         <th>First name</th>
                         <th>Last name</th>
                         <th>Address</th>
+                        <th>Avatar</th>
                         <th>Actions</th>
                     </tr>
                     {arrUsers &&
@@ -47,6 +48,13 @@ class TableManageUser extends Component {
                                     <td>{item.firstName}</td>
                                     <td>{item.lastName}</td>
                                     <td>{item.address}</td>
+                                    <td>
+                                        <img
+                                            src={item.image}
+                                            alt="avatar"
+                                            className="img-avatar"
+                                        />
+                                    </td>
                                     <td>
                                         <button
                                             className="btn-edit"

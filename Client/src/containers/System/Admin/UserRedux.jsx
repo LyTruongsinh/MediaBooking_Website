@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import { languages, crud_actions } from "../../../utils/constant";
+import { CommonUtils } from "../../../utils";
 import * as actions from "../../../store/actions";
 import "./UserRedux.scss";
 import Lightbox from "react-image-lightbox";
@@ -74,18 +75,21 @@ class UserRedux extends Component {
                 position: arrPositions && arrPositions.length > 0 ? arrPositions[0].key : "",
                 role: arrRoles && arrRoles.length > 0 ? arrRoles[0].key : "",
                 image: "",
+                previewImgUrl: "",
                 action: crud_actions.CREATE,
             });
         }
     }
-    handleOnchangeImg = (event) => {
+
+    handleOnchangeImg = async (event) => {
         let data = event.target.files; // lấy ra file ảnh
         let file = data[0]; // lấy ra file đầu tiên
         let objectUrl = URL.createObjectURL(file); // tạo ra đường dẫn tạm thời
         if (file) {
+            let base64 = await CommonUtils.toBase64(file); // chuyển đổi file sang base64
             this.setState({
                 previewImgUrl: objectUrl,
-                image: file, // lưu lại file ảnh để gửi lên server
+                image: base64, // gán giá trị base64 vào state
             });
         }
     };
@@ -118,6 +122,7 @@ class UserRedux extends Component {
                 roleId: this.state.role,
                 phoneNumber: this.state.phoneNumber,
                 positionId: this.state.position,
+                image: this.state.image,
             }); // gọi hàm createNewUser trong props và truyền vào state
         }
         if (action === crud_actions.EDIT) {
@@ -132,7 +137,7 @@ class UserRedux extends Component {
                 roleId: this.state.role,
                 phoneNumber: this.state.phoneNumber,
                 positionId: this.state.position,
-                // image: this.state.image,
+                image: this.state.image,
             });
         }
     };
@@ -150,7 +155,10 @@ class UserRedux extends Component {
         return isValid; // trả về giá trị của biến isValid
     };
     handleEditUserFromParent = (user) => {
-        console.log("check child edit user", user); // log ra thông tin người dùng
+        let imageBase64 = ""; // biến lưu trữ giá trị base64 của ảnh
+        if (user.image) {
+            imageBase64 = new Buffer(user.image, "base64").toString("binary"); // chuyển đổi giá trị base64 sang binary
+        }
         this.setState({
             email: user.email,
             password: "hardcode",
@@ -162,6 +170,7 @@ class UserRedux extends Component {
             position: user.positionId,
             role: user.roleId,
             image: "",
+            previewImgUrl: imageBase64, // gán giá trị base64 vào previewImgUrl
             action: crud_actions.EDIT,
             userEditId: user.id,
         });
