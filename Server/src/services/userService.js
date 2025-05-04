@@ -168,7 +168,7 @@ let deleteUser = (userid) => {
 let updateUserData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.id) {
+            if (!data.id || !data.roleId || !data.positionId || !data.gender || !data.phoneNumber) {
                 resolve({
                     errCode: 2,
                     message: "No data provided",
@@ -191,6 +191,10 @@ let updateUserData = (data) => {
             user.firstName = data.firstName;
             user.lastName = data.lastName;
             user.address = data.address;
+            user.roleId = data.roleId;
+            user.positionId = data.positionId;
+            user.gender = data.gender;
+            user.phoneNumber = data.phoneNumber;
             await user.save();
             resolve({
                 errCode: 0,

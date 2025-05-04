@@ -27,6 +27,7 @@ class UserRedux extends Component {
             role: "",
             image: "",
             action: "",
+            userEditId: "",
         };
     }
     async componentDidMount() {
@@ -121,12 +122,17 @@ class UserRedux extends Component {
         }
         if (action === crud_actions.EDIT) {
             this.props.editUserRedux({
-                id: this.state.id,
+                id: this.state.userEditId,
                 email: this.state.email,
                 password: this.state.password,
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
                 address: this.state.address,
+                gender: this.state.gender,
+                roleId: this.state.role,
+                phoneNumber: this.state.phoneNumber,
+                positionId: this.state.position,
+                // image: this.state.image,
             });
         }
     };
@@ -157,6 +163,7 @@ class UserRedux extends Component {
             role: user.roleId,
             image: "",
             action: crud_actions.EDIT,
+            userEditId: user.id,
         });
     };
     render() {
@@ -199,6 +206,9 @@ class UserRedux extends Component {
                                     className="form-control"
                                     value={email}
                                     onChange={(event) => this.onChangeInput(event, "email")}
+                                    disabled={
+                                        this.state.action === crud_actions.EDIT ? true : false
+                                    }
                                 />
                             </div>
                             <div className="col-3">
@@ -210,6 +220,9 @@ class UserRedux extends Component {
                                     className="form-control"
                                     value={password}
                                     onChange={(event) => this.onChangeInput(event, "password")}
+                                    disabled={
+                                        this.state.action === crud_actions.EDIT ? true : false
+                                    }
                                 />
                             </div>
                             <div className="col-3">
@@ -403,6 +416,7 @@ const mapDispatchToProps = (dispatch) => {
         getRoleStart: () => dispatch(actions.fetchRoleStart()),
         createNewUser: (data) => dispatch(actions.createNewUser(data)),
         fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
+        editUserRedux: (data) => dispatch(actions.editUser(data)),
     };
 };
 
