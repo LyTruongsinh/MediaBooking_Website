@@ -50,7 +50,7 @@ class TableManageUser extends Component {
                                     <td>{item.address}</td>
                                     <td>
                                         <img
-                                            src={item.image}
+                                            src={new Buffer(item.image, "base64").toString("binary")}
                                             alt="avatar"
                                             className="img-avatar"
                                         />
