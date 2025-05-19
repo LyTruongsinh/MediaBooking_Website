@@ -25,6 +25,9 @@
         background: #d7d7d7 !important;
     }
 }
+.slick-disabled {
+    display: none !important;
+}
 .slick-next::before {
     color: #49bce2 !important;
 }

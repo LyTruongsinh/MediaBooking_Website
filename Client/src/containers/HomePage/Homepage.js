@@ -13,7 +13,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { after } from "lodash";
 class HomePage extends Component {
-    handleAfterChange = () => {};
     render() {
         let settings = {
             dots: true,
@@ -21,7 +20,6 @@ class HomePage extends Component {
             speed: 500,
             slidesToShow: 4,
             slidesToScroll: 1,
-            afterChange: this.handleAfterChange,
         };
         return (
             <div>
