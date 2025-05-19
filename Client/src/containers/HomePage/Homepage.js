@@ -11,37 +11,40 @@ import Handbook from "./Section/Handbook.jsx";
 import "./HomePage.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { after } from "lodash";
 class HomePage extends Component {
-  render() {
-    let settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 4,
-      slidesToScroll: 1,
-    };
-    return (
-      <div>
-        <HeaderHome />
-        <Specialty settings={settings} />
-        <MedicalFacility settings={settings} />
-        <OutstandingDoctor settings={settings} />
-        <Handbook settings={settings} />
-        <AboutInf />
-        <HomeFooter />
-      </div>
-    );
-  }
+    handleAfterChange = () => {};
+    render() {
+        let settings = {
+            dots: true,
+            infinite: false,
+            speed: 500,
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            afterChange: this.handleAfterChange,
+        };
+        return (
+            <div>
+                <HeaderHome />
+                <Specialty settings={settings} />
+                <MedicalFacility settings={settings} />
+                <OutstandingDoctor settings={settings} />
+                <Handbook settings={settings} />
+                <AboutInf />
+                <HomeFooter />
+            </div>
+        );
+    }
 }
 
 const mapStateToProps = (state) => {
-  return {
-    isLoggedIn: state.user.isLoggedIn,
-  };
+    return {
+        isLoggedIn: state.user.isLoggedIn,
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+    return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

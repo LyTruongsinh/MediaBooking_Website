@@ -25,7 +25,7 @@ class OutstandingDoctor extends Component {
     render() {
         let arrDoctors = this.state.arrDoctors;
         let { language } = this.props;
-        arrDoctors = arrDoctors.concat(arrDoctors).concat(arrDoctors); // duplicate data for slider
+        // arrDoctors = arrDoctors.concat(arrDoctors).concat(arrDoctors); // duplicate data for slider
         return (
             <div className="section-share section-outstanding-doctor">
                 <div className="section-container">

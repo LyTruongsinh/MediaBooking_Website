@@ -62,8 +62,8 @@ class UserRedux extends Component {
         }
         if (prevProps.listUsers !== this.props.listUsers) {
             let arrGenders = this.props.genderRedux;
-            let arrRoles = this.props.positionRedux;
-            let arrPositions = this.props.roleRedux;
+            let arrRoles = this.props.roleRedux;
+            let arrPositions = this.props.positionRedux;
             this.setState({
                 email: "",
                 password: "",
@@ -71,9 +71,9 @@ class UserRedux extends Component {
                 lastName: "",
                 address: "",
                 phoneNumber: "",
-                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap: "",
-                position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap: "",
-                role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap: "",
+                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : "",
+                position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : "",
+                role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : "",
                 image: "",
                 previewImgUrl: "",
                 action: crud_actions.CREATE,
@@ -159,21 +159,42 @@ class UserRedux extends Component {
         if (user.image) {
             imageBase64 = new Buffer(user.image, "base64").toString("binary"); // chuyển đổi giá trị base64 sang binary
         }
-        this.setState({
-            email: user.email,
-            password: "hardcode",
-            firstName: user.firstName,
-            lastName: user.lastName,
-            address: user.address,
-            phoneNumber: user.phoneNumber,
-            gender: user.gender,
-            position: user.positionId,
-            role: user.roleId,
-            image: "",
-            previewImgUrl: imageBase64, // gán giá trị base64 vào previewImgUrl
-            action: crud_actions.EDIT,
-            userEditId: user.id,
-        });
+        if (this.props.userInfo.email === user.email) {
+            alert("Can not fix this account because islogin account"); // thông báo lỗi nếu tài khoản đang đăng nhập
+            let arrGenders = this.props.genderRedux;
+            let arrRoles = this.props.roleRedux;
+            let arrPositions = this.props.positionRedux;
+            this.setState({
+                email: "",
+                password: "",
+                firstName: "",
+                lastName: "",
+                address: "",
+                phoneNumber: "",
+                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : "",
+                position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : "",
+                role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : "",
+                image: "",
+                previewImgUrl: "",
+                action: crud_actions.CREATE,
+            });
+        } else {
+            this.setState({
+                email: user.email,
+                password: "hardcode",
+                firstName: user.firstName,
+                lastName: user.lastName,
+                address: user.address,
+                phoneNumber: user.phoneNumber,
+                gender: user.gender,
+                position: user.positionId,
+                role: user.roleId,
+                image: "",
+                previewImgUrl: imageBase64, // gán giá trị base64 vào previewImgUrl
+                action: crud_actions.EDIT,
+                userEditId: user.id,
+            });
+        }
     };
     render() {
         let genders = this.state.genderArr;
@@ -415,6 +436,7 @@ const mapStateToProps = (state) => {
         roleRedux: state.admin.roles,
         isLoadingGender: state.admin.isLoadingGender,
         listUsers: state.admin.users,
+        userInfo: state.user.userInfo,
     };
 };
 
