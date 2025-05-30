@@ -40,6 +40,27 @@ let getTopDoctorHome = (limits) => {
         }
     });
 }
+let getAllDoctors = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let doctors = await db.User.findAll({
+                where: { roleId: "R2" }, // chỉ lấy những người có vai trò là bác sĩ
+                attributes: {
+                    exclude: ["password","image"] // không lấy trường password
+                },
+                raw: true, // trả về dữ liệu thô
+            });
+            resolve({
+                errCode: 0,
+                message: "Get all doctors succeed",
+                data: doctors // trả về danh sách bác sĩ
+            });
+        } catch (e) {
+            reject(e); // ngay khi chạy reject thì ở Controller sẽ bắt error qua hàm catch
+        }
+    });
+}
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
+    getAllDoctors : getAllDoctors,
 }

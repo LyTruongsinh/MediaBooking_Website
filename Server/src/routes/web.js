@@ -22,7 +22,7 @@ let initWebRouters = (app) => {
     router.get("/api/allcode", userController.getAllCode);
     // API DOCTOR
     router.get("/api/top-doctor-home", doctorController.getTopDoctorHome);
-
+    router.get("/api/get-all-doctors", doctorController.getAllDoctors);
     return app.use("/", router);
 };
 module.exports = initWebRouters;

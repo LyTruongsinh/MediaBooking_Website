@@ -8,12 +8,10 @@ const handleLoginApi = async (useremail, userpassword) => {
 const getAllUsers = async (inputid) => {
     return axios.get(`/api/get-all-users?id=${inputid}`);
 };
-
 const createNewUserService = (data) => {
     console.log("check", data);
     return axios.post("/api/create-new-user", data);
 };
-
 const deteleUserService = (userid) => {
     return axios.delete(`/api/delete-user`, {
         data: {
@@ -21,7 +19,6 @@ const deteleUserService = (userid) => {
         },
     });
 };
-
 const editUserService = (inputdata) => {
     return axios.put("/api/edit-user", inputdata);
 };
@@ -31,6 +28,9 @@ const getAllCodeService = (inputType) => {
 const getTopDoctorHomeService = (limit) => {
     return axios.get(`/api/top-doctor-home?limit=${limit}`);
 };
+const getAllDoctors = () => {
+    return axios.get(`/api/get-all-doctors`);
+};
 export {
     handleLoginApi,
     getAllUsers,
@@ -39,4 +39,5 @@ export {
     editUserService,
     getAllCodeService,
     getTopDoctorHomeService,
+    getAllDoctors,
 };

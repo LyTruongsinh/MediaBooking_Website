@@ -22,10 +22,20 @@ class ManageDoctor extends Component {
             contentHTML: "",
             selectedOption: "",
             description: "",
+            listDoctors: [],
         };
     }
-    componentDidMount = () => {};
-    componentDidUpdate = (prevProps, prevState) => {};
+    componentDidMount = () => {
+        this.props.fetchAllDoctor(); // Fetch all doctors when the component mounts
+        // You can also fetch other necessary
+    };
+    componentDidUpdate = (prevProps, prevState) => {
+        if (prevProps.allDoctors !== this.props.allDoctors) {
+            this.setState({
+                listDoctors: this.props.allDoctors,
+            });
+        }
+    };
     handleEditorChange = ({ html, text }) => {
         this.setState({
             contentMarkdown: text,
@@ -46,6 +56,7 @@ class ManageDoctor extends Component {
         });
     };
     render() {
+        console.log("hoi dan it check props", this.state);
         return (
             <div className="manage-doctor-container">
                 <div className="manage-doctor-title">Tạo Thêm thông tin doctor</div>
@@ -90,14 +101,13 @@ class ManageDoctor extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        listUsers: state.admin.users,
+        allDoctors: state.admin.allDoctors,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
-        deleteUserRedux: (userId) => dispatch(actions.deleteUser(userId)),
+        fetchAllDoctor: () => dispatch(actions.fetchAllDoctor()),
     };
 };
 
