@@ -7,13 +7,9 @@ import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 import Select from "react-select";
-
+import { languages } from "../../../utils";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
-const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-];
+
 class ManageDoctor extends Component {
     constructor(props) {
         super(props);
@@ -29,10 +25,32 @@ class ManageDoctor extends Component {
         this.props.fetchAllDoctor(); // Fetch all doctors when the component mounts
         // You can also fetch other necessary
     };
+    buildDataInputSelect = (inputData) => {
+        let result = [];
+        let { language } = this.props;
+        if (inputData && inputData.length > 0) {
+            inputData.map((item, index) => {
+                let object = {};
+                let labelVi = `${item.lastName} ${item.firstName}`;
+                let labelEn = `${item.firstName} ${item.lastName}`;
+                object.label = language === languages.VI ? labelVi : labelEn;
+                object.value = item.id;
+                result.push(object);
+            });
+        }
+        return result
+    };
     componentDidUpdate = (prevProps, prevState) => {
         if (prevProps.allDoctors !== this.props.allDoctors) {
+            let dataSelect = this.buildDataInputSelect(this.props.allDoctors);
             this.setState({
-                listDoctors: this.props.allDoctors,
+                listDoctors: dataSelect,
+            });
+        }
+        if (prevProps.language !== this.props.language) {
+            let dataSelect = this.buildDataInputSelect(this.props.allDoctors);
+            this.setState({
+                listDoctors: dataSelect,
             });
         }
     };
@@ -56,7 +74,6 @@ class ManageDoctor extends Component {
         });
     };
     render() {
-        console.log("hoi dan it check props", this.state);
         return (
             <div className="manage-doctor-container">
                 <div className="manage-doctor-title">Tạo Thêm thông tin doctor</div>
@@ -66,7 +83,7 @@ class ManageDoctor extends Component {
                         <Select
                             value={this.state.selectedOption}
                             onChange={this.handleChange}
-                            options={options}
+                            options={this.state.listDoctors}
                         />
                     </div>
                     <div className="content-right">
@@ -102,6 +119,7 @@ class ManageDoctor extends Component {
 const mapStateToProps = (state) => {
     return {
         allDoctors: state.admin.allDoctors,
+        language: state.app.language,
     };
 };
 

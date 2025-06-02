@@ -25,7 +25,20 @@ let getAllDoctors = async (req, res) => {
         });
     }
 };
+let postInfoDoctor = async (req, res) => {
+    try {
+        let message = await doctorService.saveDetailInforDoctor(req.body);
+        return res.status(200).json(message);
+    } catch (e) {
+        console.log(e);
+        return res.status(200).json({
+            errCode: -1,
+            message: "Error from server...",
+        });
+    }
+};
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
-    getAllDoctors : getAllDoctors,
+    getAllDoctors: getAllDoctors,
+    postInfoDoctor: postInfoDoctor,
 };
