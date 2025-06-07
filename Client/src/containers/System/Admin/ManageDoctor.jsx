@@ -38,7 +38,7 @@ class ManageDoctor extends Component {
                 result.push(object);
             });
         }
-        return result
+        return result;
     };
     componentDidUpdate = (prevProps, prevState) => {
         if (prevProps.allDoctors !== this.props.allDoctors) {
@@ -66,7 +66,12 @@ class ManageDoctor extends Component {
         );
     };
     handleSaveContentMarkdown = () => {
-        console.log("hoi dan it check state", this.state);
+        this.props.saveDetailDoctor({
+            contentHTML: this.state.contentHTML,
+            contentMarkdown: this.state.contentMarkdown,
+            description: this.state.description,
+            doctorId: this.state.selectedOption.value,
+        });
     };
     handleOnChangeDescription = (event) => {
         this.setState({
@@ -126,6 +131,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchAllDoctor: () => dispatch(actions.fetchAllDoctor()),
+        saveDetailDoctor: (data) => dispatch(actions.saveDetailDoctor(data)),
     };
 };
 

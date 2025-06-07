@@ -6,6 +6,7 @@ import { deteleUserService } from "../../services/userService";
 import { editUserService } from "../../services/userService";
 import { getTopDoctorHomeService } from "../../services/userService";
 import { getAllDoctors } from "../../services/userService";
+import { saveDetailInforDoctor } from "../../services/userService";
 import { toast } from "react-toastify";
 export const fetchGenderStart = () => {
     return async (dispatch, getState) => {
@@ -249,4 +250,32 @@ export const fetchaAllDoctorSuccess = (data) => ({
 });
 export const fetchAllDoctorFailed = () => ({
     type: actionTypes.FETCH_ALL_DOCTOR_FAILDED,
+});
+
+
+
+
+export const saveDetailDoctor = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await saveDetailInforDoctor(data);
+            if (res && res.errCode === 0) {
+                toast.success("Save the doctor information succeed!");
+                dispatch(saveDetailDoctorSuccess());
+            } else {
+                toast.error("Save the doctor information failed!");
+                dispatch(saveDetailDoctorFailed());
+            }
+        } catch (e) {
+            toast.error("Save the doctor information error!");
+            console.log("fetch Top Doctor error", e);
+            dispatch(saveDetailDoctorFailed());
+        }
+    };
+};
+export const saveDetailDoctorSuccess = () => ({
+    type: actionTypes.SAVE_DETAIL_DOCTOR_SUCCESS,
+});
+export const saveDetailDoctorFailed = () => ({
+    type: actionTypes.SAVE_DETAIL_DOCTOR_FAILDED,
 });
