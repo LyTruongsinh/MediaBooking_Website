@@ -83,3 +83,4 @@ The diffrenence of Redux and LocalStorage
   - import { connect } from 'react-intl'
   - const mapStateToPros and mapDispatchToProps
   - Fuction connect cover two function mapStateToPros and mapDispatchToProps...
+* tar -xf /workspaces/codespaces-blank/node-v16.0.0-linux-x64.tar.xz -C /workspaces/codespaces-blank && export PATH=/workspaces/codespaces-blank/node-v16.0.0-linux-x64/bin:$PATH  
