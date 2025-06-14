@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
+import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import Slider from "react-slick";
 import { FormattedMessage } from "react-intl";
@@ -21,6 +22,11 @@ class OutstandingDoctor extends Component {
     };
     componentDidMount = () => {
         this.props.loadTopDoctor();
+    };
+
+    handleViewDetailDoctor = (doctor) => {
+        console.log("hoidanit", doctor);
+        this.props.history.push(`/detail-doctor/${doctor.id}`)
     };
     render() {
         let arrDoctors = this.state.arrDoctors;
@@ -45,14 +51,23 @@ class OutstandingDoctor extends Component {
                                 arrDoctors.map((item, index) => {
                                     let imageBase64 = "";
                                     if (item.image) {
-                                        imageBase64 = new Buffer(item.image, "base64").toString(
-                                            "binary"
-                                        );
+                                        imageBase64 = new Buffer(
+                                            item.image,
+                                            "base64",
+                                        ).toString("binary");
                                     }
                                     let nameVi = `${item.positionData.valueVi},${item.lastName} ${item.firstName}`;
                                     let nameEn = `${item.positionData.valueEn},${item.firstName} ${item.lastName}`;
                                     return (
-                                        <div className="section-customize" key={index}>
+                                        <div
+                                            className="section-customize"
+                                            key={index}
+                                            onClick={() =>
+                                                this.handleViewDetailDoctor(
+                                                    item,
+                                                )
+                                            }
+                                        >
                                             <div className="customize-border">
                                                 <div className="outer-bg">
                                                     <div
@@ -64,7 +79,8 @@ class OutstandingDoctor extends Component {
                                                 </div>
                                                 <div className="position text-center">
                                                     <div>
-                                                        {language === languages.VI
+                                                        {language ===
+                                                        languages.VI
                                                             ? nameVi
                                                             : nameEn}
                                                     </div>
@@ -96,4 +112,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(OutstandingDoctor);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(OutstandingDoctor));

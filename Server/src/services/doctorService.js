@@ -101,7 +101,7 @@ let getDetailDoctorById = (inputId) => {
                         id: inputId,
                     },
                     attributes: {
-                        exclude: ["password", "image"], // không lấy trường password
+                        exclude: ["password"], // không lấy trường password
                     },
                     // Join với bảng Markdown để lấy thông tin chi tiết của bác sĩ
                     include: [
@@ -124,9 +124,15 @@ let getDetailDoctorById = (inputId) => {
                             attributes: ["valueVi", "valueEn"],
                         }
                     ],
-                    raw: true, // trả về dữ liệu thô
+                    raw: false, // trả về dữ liệu thô
                     nest: true, // trả về dữ liệu dạng json
                 });
+
+                if(data && data.image)
+                {
+                    data.image = new Buffer(data.image, "base64").toString("binary");
+                }
+                if(!data) data = {}
                 resolve({
                     errCode: 0,
                     errMessage: "Get doctor information succeed",

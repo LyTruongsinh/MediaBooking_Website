@@ -81,7 +81,9 @@ class ManageDoctor extends Component {
     render() {
         return (
             <div className="manage-doctor-container">
-                <div className="manage-doctor-title">Tạo Thêm thông tin doctor</div>
+                <div className="manage-doctor-title">
+                    Tạo Thêm thông tin doctor
+                </div>
                 <div className="more-infor">
                     <div className="content-left form-group">
                         <label>Chọn bác sĩ</label>
@@ -96,7 +98,9 @@ class ManageDoctor extends Component {
                         <textarea
                             className="form-control"
                             rows="4"
-                            onChange={(event) => this.handleOnChangeDescription(event)}
+                            onChange={(event) =>
+                                this.handleOnChangeDescription(event)
+                            }
                             value={this.state.description}
                         >
                             hhhhh
