@@ -51,7 +51,7 @@ class DetailDoctor extends Component {
                                         ? detailDoctor.image
                                         : ""
                                 })`,
-                            }}
+                            }}   
                         ></div>
                         <div className="content-right">
                             <div className="up">

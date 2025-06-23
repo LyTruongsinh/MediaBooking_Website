@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { FormattedMessage } from "react-intl";
-
+import { withRouter } from "react-router";
 import "./HeaderHome.scss";
 import { languages } from "../../utils/constant";
 import { changeLanguageApp } from "../../store/actions";
@@ -11,6 +11,12 @@ class HeaderHome extends Component {
         // fire redux event : action
         this.props.changeLanguageAppRedux(language);
     };
+    returnToHome = () =>
+    {
+        if (this.props.history) {
+            this.props.history.push("/home");
+        }
+    }
     render() {
         let language = this.props.language; // lấy trong redux ko phải props
         return (
@@ -19,7 +25,7 @@ class HeaderHome extends Component {
                     <div className="home-header-content">
                         <div className="left-content">
                             <i className="fas fa-bars"></i>
-                            <div className="header-logo"></div>
+                            <div className="header-logo" onClick={()=>this.returnToHome()}></div>
                         </div>
                         <div className="center-content">
                             <div className="child-content">
@@ -193,4 +199,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderHome);
+export default withRouter (connect(mapStateToProps, mapDispatchToProps)(HeaderHome));

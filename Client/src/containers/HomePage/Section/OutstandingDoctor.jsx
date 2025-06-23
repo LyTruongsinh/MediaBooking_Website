@@ -26,7 +26,9 @@ class OutstandingDoctor extends Component {
 
     handleViewDetailDoctor = (doctor) => {
         console.log("hoidanit", doctor);
-        this.props.history.push(`/detail-doctor/${doctor.id}`)
+        if (this.props.history && !this.props.isLoggedIn) {
+            this.props.history.push(`/detail-doctor/${doctor.id}`);
+        }
     };
     render() {
         let arrDoctors = this.state.arrDoctors;
@@ -112,4 +114,6 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(OutstandingDoctor));
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(OutstandingDoctor),
+);

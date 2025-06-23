@@ -7,7 +7,8 @@ import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 import Select from "react-select";
-import { languages } from "../../../utils";
+import { crud_actions, languages } from "../../../utils";
+import { getDetailInforDoctor } from "../../../services/userService";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 class ManageDoctor extends Component {
@@ -19,6 +20,7 @@ class ManageDoctor extends Component {
             selectedOption: "",
             description: "",
             listDoctors: [],
+            hasOldData: false,
         };
     }
     componentDidMount = () => {
@@ -60,17 +62,38 @@ class ManageDoctor extends Component {
             contentHTML: html,
         });
     };
-    handleChange = (selectedOption) => {
-        this.setState({ selectedOption }, () =>
-            console.log(`Option selected:`, this.state.selectedOption)
-        );
+    handleChangeSelect = async (selectedOption) => {
+        console.log("select", selectedOption);
+        console.log("state", this.state);
+        this.setState({ selectedOption }, () => {
+            console.log("newstate", this.state);
+        });
+        let res = await getDetailInforDoctor(selectedOption.value);
+        if (res && res.errCode === 0 && res.data && res.data.Markdown) {
+            let markdown = res.data.Markdown;
+            this.setState({
+                contentHTML: markdown.contentHTML,
+                contentMarkdown: markdown.contentMarkdown,
+                description: markdown.description,
+                hasOldData: true,
+            });
+        } else {
+            this.setState({
+                contentHTML: "",
+                contentMarkdown: "",
+                description: "",
+                hasOldData: false,
+            });
+        }
     };
     handleSaveContentMarkdown = () => {
+        let { hasOldData } = this.state;
         this.props.saveDetailDoctor({
             contentHTML: this.state.contentHTML,
             contentMarkdown: this.state.contentMarkdown,
             description: this.state.description,
             doctorId: this.state.selectedOption.value,
+            action : hasOldData === true ? crud_actions.EDIT : crud_actions.CREATE
         });
     };
     handleOnChangeDescription = (event) => {
@@ -79,6 +102,7 @@ class ManageDoctor extends Component {
         });
     };
     render() {
+        let { hasOldData } = this.state;
         return (
             <div className="manage-doctor-container">
                 <div className="manage-doctor-title">
@@ -89,7 +113,7 @@ class ManageDoctor extends Component {
                         <label>Chọn bác sĩ</label>
                         <Select
                             value={this.state.selectedOption}
-                            onChange={this.handleChange}
+                            onChange={this.handleChangeSelect}
                             options={this.state.listDoctors}
                         />
                     </div>
@@ -112,13 +136,22 @@ class ManageDoctor extends Component {
                         style={{ height: "500px" }}
                         renderHTML={(text) => mdParser.render(text)}
                         onChange={this.handleEditorChange}
+                        value={this.state.contentMarkdown}
                     />
                 </div>
                 <button
-                    className="save-content-doctor"
+                    className={
+                        hasOldData === true
+                            ? "save-content-doctor"
+                            : "create-content-doctor"
+                    }
                     onClick={() => this.handleSaveContentMarkdown()}
                 >
-                    Lưu thông tin
+                    {hasOldData === true ? (
+                        <span>Lưu Thông Tin</span>
+                    ) : (
+                        <span>Tạo Thông Tin</span>
+                    )}
                 </button>
             </div>
         );

@@ -34,6 +34,11 @@
       "manage-specialty": "Manage Specialty",
       "handbook": "Handbook",
       "manage-handbook": "Manage Handbook"
+    },
+    "doctor" : {
+      "manage-schedule": "Manage Schedule",
+      "manage-patient": "Manage Patient",
+      "manage-prescription": "Manage Prescription"
     }
   },
   "manage-user": {
@@ -54,5 +59,13 @@
   "homepage" : {
     "outstanding-doctor": "Outstanding doctor",
     "more-info": "More Infor"
+  },
+  "manage-schedule":
+  {
+    "title" : "Manage Schedule",
+    "select-doctor": "Select doctor",
+    "select-date": "Select date",
+    "time": "Time",
+    "price": "Price"
   }
 }

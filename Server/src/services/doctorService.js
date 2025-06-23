@@ -64,19 +64,41 @@ let getAllDoctors = () => {
 let saveDetailInforDoctor = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.doctorId || !data.contentHTML || !data.contentMarkdown) {
+            if (
+                !data.doctorId ||
+                !data.contentHTML ||
+                !data.contentMarkdown ||
+                !data.action
+            ) {
                 // Nếu không có trường ID, contentHTML, contentMarkdown
                 resolve({
                     errCode: 1,
                     errMessage: "Missing parameter",
                 });
             } else {
-                await db.Markdown.create({
-                    contentHTML: data.contentHTML,
-                    contentMarkdown: data.contentMarkdown,
-                    description: data.description,
-                    doctorId: data.doctorId,
-                });
+                if (data.action === "CREATE") {
+                    await db.Markdown.create({
+                        contentHTML: data.contentHTML,
+                        contentMarkdown: data.contentMarkdown,
+                        description: data.description,
+                        doctorId: data.doctorId,
+                    });
+                }
+                if (data.action === "EDIT") {
+                    let doctorMarkdown = await db.Markdown.findOne({
+                        where: {
+                            doctorId: data.doctorId,
+                        },
+                        raw: false,
+                    });
+                    if (doctorMarkdown) {
+                        doctorMarkdown.contentHTML = data.contentHTML;
+                        doctorMarkdown.contentMarkdown = data.contentMarkdown;
+                        doctorMarkdown.description = data.description;
+                        doctorMarkdown.updateAt = new Date();
+                        await doctorMarkdown.save();
+                    }
+                }
                 resolve({
                     errCode: 0,
                     errMessage: "Save information succeed!",
@@ -111,7 +133,7 @@ let getDetailDoctorById = (inputId) => {
                                 "description",
                                 "contentHTML",
                                 "contentMarkdown",
-                            ]
+                            ],
                         },
                         {
                             model: db.Allcode,
@@ -122,17 +144,18 @@ let getDetailDoctorById = (inputId) => {
                             model: db.Allcode,
                             as: "genderData",
                             attributes: ["valueVi", "valueEn"],
-                        }
+                        },
                     ],
                     raw: false, // trả về dữ liệu thô
                     nest: true, // trả về dữ liệu dạng json
                 });
 
-                if(data && data.image)
-                {
-                    data.image = new Buffer(data.image, "base64").toString("binary");
+                if (data && data.image) {
+                    data.image = new Buffer.from(data.image, "base64").toString(
+                        "binary",
+                    );
                 }
-                if(!data) data = {}
+                if (!data) data = {};
                 resolve({
                     errCode: 0,
                     errMessage: "Get doctor information succeed",
