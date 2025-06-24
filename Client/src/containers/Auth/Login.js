@@ -42,7 +42,10 @@ class Login extends Component {
         console.log("Username", this.state.username);
         console.log("Password", this.state.password);
         try {
-            let data = await handleLoginApi(this.state.username, this.state.password);
+            let data = await handleLoginApi(
+                this.state.username,
+                this.state.password,
+            );
             if (data && data.errCode != 0) {
                 this.setState({ errorMessage: data.message });
             }
@@ -53,9 +56,17 @@ class Login extends Component {
         } catch (error) {
             if (error.response) {
                 if (error.response.data) {
-                    this.setState({ errorMessage: error.response.data.message });
+                    this.setState({
+                        errorMessage: error.response.data.message,
+                    });
                 }
             }
+        }
+    };
+
+    handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            this.handleLogin();
         }
     };
     render() {
@@ -73,7 +84,9 @@ class Login extends Component {
                                 className="form-control"
                                 placeholder="Enter username or email"
                                 value={this.state.username}
-                                onChange={(event) => this.handleOnchangeUsername(event)}
+                                onChange={(event) =>
+                                    this.handleOnchangeUsername(event)
+                                }
                             />
                         </div>
                         <div className="col-12 form-group login-input">
@@ -82,11 +95,20 @@ class Login extends Component {
                             </label>
                             <div className="custom-input-password">
                                 <input
-                                    type={this.state.isShowPassword ? "text" : "password"}
+                                    type={
+                                        this.state.isShowPassword
+                                            ? "text"
+                                            : "password"
+                                    }
                                     className="form-control"
                                     placeholder="Enter password"
                                     value={this.state.password}
-                                    onChange={(event) => this.handleOnchangePassword(event)}
+                                    onChange={(event) =>
+                                        this.handleOnchangePassword(event)
+                                    }
+                                    onKeyDown={(event) =>
+                                        this.handleKeyDown(event)
+                                    }
                                 />
                                 <span onClick={() => this.handleShowHidePass()}>
                                     <i
@@ -115,10 +137,14 @@ class Login extends Component {
                             </button>
                         </div>
                         <div className="col-12">
-                            <span className="forgot-ps">Forget your password?</span>
+                            <span className="forgot-ps">
+                                Forget your password?
+                            </span>
                         </div>
                         <div className="col-12 text-center mt-5">
-                            <span className="text-other-login">Or Login With</span>
+                            <span className="text-other-login">
+                                Or Login With
+                            </span>
                         </div>
                         <div className="col-12 social-login">
                             <i className="fab fa-facebook-square facebook"></i>
@@ -142,7 +168,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         navigate: (path) => dispatch(push(path)),
         // userLoginFail: () => dispatch(actions.adminLoginFail()),
-        userLoginSuccess: (userInfo) => dispatch(actions.userLoginSuccess(userInfo)),
+        userLoginSuccess: (userInfo) =>
+            dispatch(actions.userLoginSuccess(userInfo)),
     };
 };
 

@@ -66,6 +66,7 @@
     "select-doctor": "Select doctor",
     "select-date": "Select date",
     "time": "Time",
+    "save" :"Save information",
     "price": "Price"
   }
 }
