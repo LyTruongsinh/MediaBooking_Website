@@ -6,6 +6,7 @@ import "./DetailDoctor.scss";
 import { getDetailInforDoctor } from "../../../services/userService";
 import { assignWith } from "lodash";
 import { languages } from "../../../utils/constant";
+import DoctorSchedule from "./DoctorSchedule";
 class DetailDoctor extends Component {
     constructor(props) {
         super(props);
@@ -67,7 +68,12 @@ class DetailDoctor extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="schedual-doctor"></div>
+                    <div className="schedual-doctor">
+                        <div className="content-left">
+                            <DoctorSchedule/>
+                        </div>
+                        <div className="content-right"></div>
+                    </div>
                     <div className="detail-infor-doctor">
                         {detailDoctor &&
                             detailDoctor.Markdown &&

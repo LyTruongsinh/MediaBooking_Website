@@ -9,6 +9,7 @@ import DatePicker from "../../../components/Input/DatePicker";
 import moment from "moment";
 import { toast } from "react-toastify";
 import _ from "lodash";
+import { saveBulkScheduleDoctor } from "../../../services/userService";
 class ManageSchedule extends Component {
     constructor(props) {
         super(props);
@@ -91,7 +92,7 @@ class ManageSchedule extends Component {
             });
         }
     };
-    handleSaveSchedule = () => {
+    handleSaveSchedule = async () => {
         let { rangeTime, selectedDoctor, currentDate } = this.state;
         let result = [];
         if (!currentDate) {
@@ -102,9 +103,7 @@ class ManageSchedule extends Component {
             toast.error("Invalid selected doctor!");
             return;
         }
-        let formatedDate = moment(currentDate).format(
-            dateFormat.SEND_TO_SERVER,
-        );
+        let formatedDate = new Date(currentDate).getTime();
         if (rangeTime && rangeTime.length > 0) {
             let selectedTime = rangeTime.filter(
                 (item) => item.isSelected === true,
@@ -114,7 +113,7 @@ class ManageSchedule extends Component {
                     let object = {};
                     object.doctorId = selectedDoctor.value;
                     object.date = formatedDate;
-                    object.time = time.keyMap;
+                    object.timeType = time.keyMap;
                     result.push(object);
                 });
             } else {
@@ -122,7 +121,16 @@ class ManageSchedule extends Component {
                 return;
             }
         }
-        
+        try {
+            let res = await saveBulkScheduleDoctor({
+                arrSchedule: result,
+                doctorId: selectedDoctor.value,
+                date: formatedDate,
+            });
+            toast.success("Save schedule success !");
+        } catch (e) {
+            toast.error("Save schedule failed !");
+        }
     };
     render() {
         let { rangeTime } = this.state;
