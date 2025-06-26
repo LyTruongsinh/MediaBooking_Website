@@ -52,7 +52,7 @@ class DetailDoctor extends Component {
                                         ? detailDoctor.image
                                         : ""
                                 })`,
-                            }}   
+                            }}
                         ></div>
                         <div className="content-right">
                             <div className="up">
@@ -70,7 +70,13 @@ class DetailDoctor extends Component {
                     </div>
                     <div className="schedual-doctor">
                         <div className="content-left">
-                            <DoctorSchedule/>
+                            <DoctorSchedule
+                                doctorId={
+                                    detailDoctor && detailDoctor.id
+                                        ? detailDoctor.id
+                                        : -1
+                                }
+                            />
                         </div>
                         <div className="content-right"></div>
                     </div>

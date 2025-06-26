@@ -197,7 +197,7 @@ let bulkCreateSchedule = (data) => {
                     raw: true,
                 });
 
-                // Convert date 
+                // Convert date
                 if (existing && existing.length > 0) {
                     existing = existing.map((item) => {
                         item.date = new Date(item.date).getTime();
@@ -223,10 +223,39 @@ let bulkCreateSchedule = (data) => {
         }
     });
 };
+let getScheduleByDate = (doctorId, date) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorId || !date) {
+                resolve({
+                    errCode: 1,
+                    errMessage: "Missing parameter",
+                });
+            }
+            else {
+                let dataschedule = await db.Schedule.findAll({
+                    where: {
+                        doctorId: doctorId,
+                        date: date
+                    }
+                })
+                if(!dataschedule) dataschedule = [];
+                resolve({
+                    errCode: 0,
+                    data: dataschedule,
+                    errMessage: "Get schedule by doctor success !",
+                })
+            }
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
     getAllDoctors: getAllDoctors,
     saveDetailInforDoctor: saveDetailInforDoctor,
     getDetailDoctorById: getDetailDoctorById,
     bulkCreateSchedule: bulkCreateSchedule,
+    getScheduleByDate: getScheduleByDate,
 };
