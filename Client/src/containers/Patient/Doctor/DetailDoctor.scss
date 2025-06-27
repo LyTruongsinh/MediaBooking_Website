@@ -13,12 +13,13 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            margin: 10px 20px;
-            background-size: cover; 
+            margin: 10px 10px 20px 0px;
+            background-size: cover;
             image-rendering: auto;
             border: 3px solid var(--primary-color-blue);
         }
         .content-right {
+            padding-top: 15px;
             width: 80%;
             display: flex;
             flex-direction: column;
@@ -30,7 +31,7 @@
             }
             .down {
                 padding-top: 10px;
-                font-family: 'Montserrat', sans-serif;
+                font-family: "Montserrat", sans-serif;
                 font-size: 13px;
                 color: #867f7f;
                 font-weight: 500;
@@ -41,7 +42,6 @@
         margin: 0 100px;
         display: flex;
         height: 200px;
-        border: 1px solid burlywood;
         .content-left {
             width: 50%;
         }

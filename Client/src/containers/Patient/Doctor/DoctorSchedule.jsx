@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import "./DetailDoctor.scss";
+import "./DoctorSchedule.scss";
 import { languages } from "../../../utils/constant";
 import moment from "moment";
 import localization from "moment/locale/vi";
@@ -10,6 +10,7 @@ class DoctorSchedule extends Component {
         super(props);
         this.state = {
             allDays: [],
+            allAvailableTime: [],
         };
     }
     // thực hiện một lần
@@ -21,21 +22,27 @@ class DoctorSchedule extends Component {
         let arrDate = [];
         for (let i = 0; i < 7; i++) {
             let object = {};
-            if (this.props.language === languages.VI) {
-                object.label = moment(new Date())
-                    .add(i, "days")
-                    .format("dddd - DD/YY");
+            let dateMoment = moment(new Date()).add(i, "days");
+            if (language === languages.VI) {
+                if (i === 0) {
+                    object.label = `Hôm nay - ${dateMoment.format("DD/MM")}`;
+                } else {
+                    object.label = dateMoment
+                        .format("dddd - DD/MM")
+                        .replace(/^./, (str) => str.toUpperCase());
+                }
             } else {
-                object.label = moment(new Date())
-                    .add(i, "days")
-                    .locale("en")
-                    .format("ddd - DD/YY");
+                if (i === 0) {
+                    object.label = `Today - ${dateMoment
+                        .locale("en")
+                        .format("DD/MM")}`;
+                } else {
+                    object.label = dateMoment
+                        .locale("en")
+                        .format("ddd - DD/MM");
+                }
             }
-
-            object.value = moment(new Date())
-                .add(i, "days")
-                .startOf("day") // lấy bắt đầu 1 ngày 0 h 0 p 0 s
-                .valueOf(); // convert sang Unix Time
+            object.value = dateMoment.startOf("day").valueOf();
             arrDate.push(object);
         }
 
@@ -49,18 +56,20 @@ class DoctorSchedule extends Component {
         }
     };
     handleOnchangeSelect = async (event) => {
-        if (
-            this.props.doctorId &&
-            this.props.doctorId !== -1
-        ) {
+        if (this.props.doctorId && this.props.doctorId !== -1) {
             let doctorId = this.props.doctorId;
             let date = event.target.value;
             let res = await getScheduleDoctorByDate(doctorId, date);
-            console.log("check res schedule", res);
+            if (res && res.errCode === 0) {
+                this.setState({
+                    allAvailableTime: res.data ? res.data : [],
+                });
+            }
         }
     };
     render() {
-        let { allDays } = this.state;
+        let { allDays, allAvailableTime } = this.state;
+        let { language } = this.props;
         return (
             <div className="doctor-schedule-container">
                 <div className="all-schedule">
@@ -78,7 +87,33 @@ class DoctorSchedule extends Component {
                             })}
                     </select>
                 </div>
-                <div className="all-available-time"></div>
+                <div className="all-available-time">
+                    <div className="text-calendar">
+                        <i className="fas fa-calendar-alt">
+                            <span>Lịch khám</span>
+                        </i>
+                        <div className="time-content">
+                            {allAvailableTime && allAvailableTime.length > 0 ? (
+                                allAvailableTime.map((item, index) => {
+                                    let timeDisplay =
+                                        language === languages.VI
+                                            ? item.timeTypeData.valueVi
+                                            : item.timeTypeData.valueEn;
+                                    return (
+                                        <button key={index}>
+                                            {timeDisplay}
+                                        </button>
+                                    );
+                                })
+                            ) : (
+                                <div>
+                                    Không có lịch hẹn trong thời gian này vui
+                                    lòng chọn thời gian khác!
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -86,7 +121,6 @@ class DoctorSchedule extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.user.isLoggedIn,
         language: state.app.language,
     };
 };

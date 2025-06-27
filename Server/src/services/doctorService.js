@@ -197,17 +197,9 @@ let bulkCreateSchedule = (data) => {
                     raw: true,
                 });
 
-                // Convert date
-                if (existing && existing.length > 0) {
-                    existing = existing.map((item) => {
-                        item.date = new Date(item.date).getTime();
-                        return item;
-                    });
-                }
-
                 // lấy sự khác nhau giữa data vào và data đã tồn tại trả về data sai khác đó
                 let toCreate = _.differenceWith(schedule, existing, (a, b) => {
-                    return a.timeType === b.timeType && a.date === b.date;
+                    return a.timeType === b.timeType && +a.date === +b.date; // thêm dấu + để so sánh 5 = '5'
                 });
 
                 if (toCreate && toCreate.length > 0) {
@@ -231,20 +223,28 @@ let getScheduleByDate = (doctorId, date) => {
                     errCode: 1,
                     errMessage: "Missing parameter",
                 });
-            }
-            else {
+            } else {
                 let dataschedule = await db.Schedule.findAll({
                     where: {
                         doctorId: doctorId,
-                        date: date
-                    }
-                })
-                if(!dataschedule) dataschedule = [];
+                        date: date,
+                    },
+                    include: [
+                        {
+                            model: db.Allcode,
+                            as: "timeTypeData",
+                            attributes: ["valueVi", "valueEn"],
+                        },
+                    ],
+                    raw: false, // trả về dữ liệu thô
+                    nest: true, // trả về dữ liệu dạng json
+                });
+                if (!dataschedule) dataschedule = [];
                 resolve({
                     errCode: 0,
                     data: dataschedule,
                     errMessage: "Get schedule by doctor success !",
-                })
+                });
             }
         } catch (e) {
             reject(e);
