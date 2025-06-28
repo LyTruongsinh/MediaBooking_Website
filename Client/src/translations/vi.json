@@ -68,5 +68,22 @@
     "time": "Thời gian",
     "save" :"Lưu thông tin",
     "price": "Giá khám"
+  },
+  "patient" : {
+    "detail-doctor" : {
+      "schedule" : "Lịch khám",
+      "no-schedule" : "Bác sĩ không có lịch hẹn trong thời gian này vui lòng chọn thời gian khác!",
+      "choose" : "Chọn ",
+      "book-free": "và đặt (miễn phí)"
+    }
+  },
+  "admin": {
+    "manage-doctor" :{
+      "title": "Tạo thêm thông tin bác sĩ",
+      "select-doctor": "Chọn bác sĩ",
+      "intro": "Thông tin giới thiệu",
+      "add": "Tạo thông tin",
+      "save": "Lưu thông tin"
+    }
   }
 }

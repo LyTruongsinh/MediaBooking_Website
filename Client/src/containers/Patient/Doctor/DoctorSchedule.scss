@@ -4,7 +4,7 @@
 }
 
 .doctor-schedule-container {
-    border-right: 1px solid green;
+    border-right: 1px solid grey;
     height: 100%;
     .all-schedule {
         select {
@@ -28,31 +28,49 @@
             color: #333;
             i {
                 margin-bottom: 10px;
+                span {
+                    text-transform: uppercase;
+                    margin-left: 5px;
+                    font-style: inherit !important;
+                }
             }
-            span {
-                text-transform: uppercase;
-                margin-left: 5px;
-            }
-        }
-        .time-content {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            button {
-                padding: 8x 10px;
-                border: none;
-                outline: none;
-                background-color: var(--primary-color-yellow);
-                min-width: 120px;
-                min-height: 32px;
-                border-radius: 3px;
-                font-weight: 600;
-                color: #333;
-                transition: background-color 0.4s, color 0.4s; // Thêm dòng này để giảm tốc độ hover
+            .time-content {
+                .time-content-btns {
+                    display: flex;
+                    gap: 15px;
+                    flex-wrap: wrap;
 
-                &:hover {
-                    background-color: var(--primary-color-blue);
-                    color: white;
+                    button {
+                        border: none;
+                        outline: none;
+                        background-color: var(--primary-color-yellow);
+                        min-width: 150px;
+                        min-height: 38px;
+                        border-radius: 3px;
+                        font-weight: 600;
+                        color: #333;
+                        transition: background-color 0.4s, color 0.4s; // Thêm dòng này để giảm tốc độ hover
+
+                        &:hover {
+                            background-color: var(--primary-color-blue);
+                            color: white;
+                        }
+                    }
+                    .btn-vi {
+                        min-width: 120px;
+                    }
+                    .btn-en {
+                        min-width: 150px;
+                    }
+
+                    .no-schedule {
+                        font-style: italic;
+                        font-size: 14px;
+                        color: var(--primary-color-blue);
+                    }
+                }
+                .book-free {
+                    margin-top: 10px;
                 }
             }
         }
